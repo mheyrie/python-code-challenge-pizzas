@@ -7,4 +7,6 @@ class Restaurant(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
+
+
 # add any models you may need. 
