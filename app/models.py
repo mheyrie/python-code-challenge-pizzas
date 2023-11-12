@@ -3,8 +3,6 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 
 
-
-
 db = SQLAlchemy()
 
 class Restaurant(db.Model, SerializerMixin):
@@ -14,6 +12,7 @@ class Restaurant(db.Model, SerializerMixin):
     name = db.Column(db.String(50), unique=True)
     address = db.Column(db.String)
 
+    # Establishes relationship between Restaurant model and the RestaurantPizza table
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
 
     def __repr__(self):
@@ -32,7 +31,7 @@ class Pizza(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    # Establishes relationship between Pizza model and the 
+    # Establishes relationship between Pizza model and the RestaurantPizza table
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='pizza')
 
     def __repr__(self):
