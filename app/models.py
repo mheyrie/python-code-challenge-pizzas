@@ -2,6 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 
+
+
+
 db = SQLAlchemy()
 
 class Restaurant(db.Model, SerializerMixin):
@@ -13,8 +16,9 @@ class Restaurant(db.Model, SerializerMixin):
 
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
 
-    def __init__(self):
+    def __repr__(self):
         return f'<Restaurant {self.name} at {self.address}>'
+
 
 
 
@@ -28,12 +32,15 @@ class Pizza(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    # Establishes relationship between Pizza model and the 
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='pizza')
 
-    def __init__(self):
+    def __repr__(self):
         return f'<Pizza {self.name}, Ingredients include: {self.address}>'
 
  
+
+
 class RestaurantPizza(db.Model, SerializerMixin):
      __tablename__ = 'restaurant_pizzas'
 
@@ -41,12 +48,13 @@ class RestaurantPizza(db.Model, SerializerMixin):
      price = db.Column(db.Integer)
      created_at = db.Column(db.DateTime, server_default=db.func.now())
      updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-
+    
+     #Takes in Primary from both Restaurant and Pizza inform of a foreign key
      restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
      pizza_id = db.Column(db.Integer, db.ForeignKey('pizzas.id'))
 
 
-     def __init__(self):
+     def __repr__(self):
         return f'<RestaurantPizza {self.id} for {self.price}>'
 
     #Validation that price must be between 1 and
