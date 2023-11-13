@@ -1,3 +1,4 @@
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
@@ -10,7 +11,7 @@ class Restaurant(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
-    address = db.Column(db.String)
+    address = db.Column(db.String(50))
 
     # Establishes relationship between Restaurant model and the RestaurantPizza table
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='restaurant')
@@ -26,8 +27,8 @@ class Pizza(db.Model, SerializerMixin):
     __tablename__ = 'pizzas'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
-    ingredients = db.Column(db.String)
+    name = db.Column(db.String)
+    ingredients = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
@@ -35,7 +36,7 @@ class Pizza(db.Model, SerializerMixin):
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='pizza')
 
     def __repr__(self):
-        return f'<Pizza {self.name}, Ingredients include: {self.address}>'
+        return f'<Pizza {self.name}, Ingredients include: {self.ingredients}>'
 
  
 
@@ -56,11 +57,11 @@ class RestaurantPizza(db.Model, SerializerMixin):
      def __repr__(self):
         return f'<RestaurantPizza {self.id} for {self.price}>'
 
-    #Validation that price must be between 1 and
+    #Validation that price must be between 1 and 30
      @validates('price')
      def validate_price(self, key, price):
-        if len(price) < 1 or len(price) >30:
-            raise ValueError("Input Price between the range of 1 -3-")
+        if price < 1 or price >30:
+            raise ValueError("Input Price between the range of 1 and 30")
         return price
 
 
