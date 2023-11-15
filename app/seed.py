@@ -54,9 +54,9 @@ pizza_ingredient = [
 with app.app_context():
     
     #Used to reset the db, deletes any previoue info on the db any time this file is initiated
-    # Restaurant.query.delete()
-    # Pizza.query.delete()
-    # RestaurantPizza.query.delete()
+    Restaurant.query.delete()
+    Pizza.query.delete()
+    RestaurantPizza.query.delete()
     
  
   #Instantiating Restaurant
@@ -67,7 +67,7 @@ with app.app_context():
             address=fake.address(),)
         restaurants.append(rt)
 
-    # db.session.add_all(restaurants)
+    db.session.add_all(restaurants)
     # print(restaurants)
     
 
@@ -81,11 +81,11 @@ with app.app_context():
             )
         pizzas.append(pz)
 
-    # db.session.add_all(pizzas)
+    db.session.add_all(pizzas)
   
 
     restaurant_pizzas = []
-    for value in range(15):
+    for value in range(40):
         rp = RestaurantPizza(
             price = randint(1, 30)            
         ) 
@@ -95,8 +95,8 @@ with app.app_context():
         restaurant_pizzas.append(rp)
 
 
-    # db.session.add_all(restaurant_pizzas)
+    db.session.add_all(restaurant_pizzas)
     
-    # db.session.commit()
+    db.session.commit()
 
 

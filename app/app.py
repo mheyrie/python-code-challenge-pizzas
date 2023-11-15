@@ -27,7 +27,7 @@ def restaurants():
         restaurants = Restaurant.query.all()
 
         response = make_response(
-            jsonify([restaurant.to_dict() for restaurant in restaurants]),
+            jsonify([restaurant.to_dict(rules=('-pizzas',)) for restaurant in restaurants]),
             200
         )
 
@@ -37,12 +37,25 @@ def restaurants():
     
 @app.route('/restaurants/<int:id>', methods=['GET', 'DELETE'])
 def restaurants_by_id(id):
-    restaurant = Restaurant.query.filter(Restaurant.id==id).all(RestaurantPizza.pizza_id)
+    restaurant = Restaurant.query.filter(Restaurant.id==id).first()
     if request.method == 'GET':
         
         response = make_response(jsonify(restaurant.to_dict()), 200)
         return response
     
+
+
+@app.route('/pizzas', methods=['GET'])
+def pizzas():
+    if request.method == 'GET':
+        pizzas = Pizza.query.all()
+
+        response = make_response(
+            jsonify([pizza.to_dict() for pizza in pizzas]),
+            200
+        )
+
+        return response
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

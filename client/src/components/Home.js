@@ -8,6 +8,7 @@ function Home() {
     fetch("/restaurants")
       .then((r) => r.json())
       .then(setRestaurants);
+      console.log(setRestaurants)
   }, []);
 
   function handleDelete(id) {
