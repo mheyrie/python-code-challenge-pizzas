@@ -19,7 +19,7 @@ db.init_app(app)
 
 @app.route('/')
 def home_testing():
-    return '<h1>This is just for testing remember to delete</h1>'
+    return '<h1>This is just a Home Page</h1>'
 
 @app.route('/restaurants', methods=['GET'])
 def restaurants():
