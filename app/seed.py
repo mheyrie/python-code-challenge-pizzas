@@ -54,9 +54,9 @@ pizza_ingredient = [
 with app.app_context():
     
     #Used to reset the db, deletes any previoue info on the db any time this file is initiated
-    Restaurant.query.delete()
-    Pizza.query.delete()
-    RestaurantPizza.query.delete()
+    # Restaurant.query.delete()
+    # Pizza.query.delete()
+    # RestaurantPizza.query.delete()
     
  
   #Instantiating Restaurant
@@ -97,6 +97,6 @@ with app.app_context():
 
     db.session.add_all(restaurant_pizzas)
     
-    db.session.commit()
+    # db.session.commit()
 
 

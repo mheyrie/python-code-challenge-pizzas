@@ -38,11 +38,28 @@ def restaurants():
 @app.route('/restaurants/<int:id>', methods=['GET', 'DELETE'])
 def restaurants_by_id(id):
     restaurant = Restaurant.query.filter(Restaurant.id==id).first()
-    if request.method == 'GET':
+    if restaurant == None:
+        response_body = {
+            "error": "Restaurant not found"
+        }
+        repsonse = make_response(response_body, 404)
+        return repsonse
+    else:
+        if request.method == 'GET':
+            return make_response(jsonify(restaurant.to_dict()), 200)
         
-        response = make_response(jsonify(restaurant.to_dict()), 200)
-        return response
-    
+        elif request.method == 'DELETE':
+                db.session.delete(restaurant)
+                db.session.commit()
+
+                response_body = {
+                    
+                }
+                repsonse = make_response(
+                    response_body, 
+                    200
+                )
+                return repsonse
 
 
 @app.route('/pizzas', methods=['GET'])
@@ -55,7 +72,55 @@ def pizzas():
             200
         )
 
-        return response
+        return response 
+    
+
+
+@app.route('/restaurant_pizzas', methods=['GET', 'POST'])
+def restaurant_pizzas():
+
+    if request.method == 'GET':
+        restaurant_pizzas = []
+        for restaurant_pizza in RestaurantPizza.query.all():
+            restaurant_pizza_dict = restaurant_pizza.to_dict()
+            restaurant_pizzas.append(restaurant_pizza_dict)
+
+        response = make_response(
+            jsonify(restaurant_pizzas),
+            200
+        )
+
+    else:
+        if request.method == 'POST':
+            new_restaurant_pizza = RestaurantPizza(
+                price = request.form.get("price"),
+                pizza_id = request.form.get("pizza_id"),
+                restaurant_id = request.form.get("restaurant_id"),
+            )
+
+            db.session.add(new_restaurant_pizza)
+            db.session.commit()
+
+            restaurant_pizza_dict = new_restaurant_pizza()
+
+            response = make_response(
+                restaurant_pizza_dict,
+                201
+            )
+
+            return response
+        else:
+            if new_restaurant_pizza == None:
+                response_body = {
+                            "errors": ["validation errors"]
+                            }
+                repsonse = make_response(response_body, 404)
+        return repsonse
+    
+        
+
+
+    
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

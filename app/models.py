@@ -18,11 +18,11 @@ class Restaurant(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True) 
     name = db.Column(db.String(50), unique=True)
     address = db.Column(db.String(50))
-    pizzas = db.relationship('Pizza', secondary='restaurant_pizzas', back_populates='restaurants')
+    
 
     # Establishes relationship between Restaurant model and the RestaurantPizza table
     # restaurant_pizzas= db.relationship('RestaurantPizza', backref='restaurant')
-    
+    pizzas = db.relationship('Pizza', secondary='restaurant_pizzas', back_populates='restaurants')
     
     def __repr__(self):
         return f'<Restaurant {self.name} at {self.address}>'
@@ -44,7 +44,7 @@ class Pizza(db.Model, SerializerMixin):
     # Establishes relationship between Pizza model and the RestaurantPizza table
     
     restaurants = db.relationship('Restaurant', secondary='restaurant_pizzas', back_populates='pizzas')
-    
+    # restaurant_pizzas= db.relationship('RestaurantPizza', backref='pizza')
 
     def __repr__(self):
         return f'<Pizza {self.name}, Ingredients include: {self.ingredients}>'
@@ -71,10 +71,10 @@ class RestaurantPizza(db.Model, SerializerMixin):
         return f'<RestaurantPizza {self.id} for {self.price}>'
 
     #Validation that price must be between 1 and 30
-     @validates('price')
-     def validate_price(self, key, price):
-        if price < 1 or price >30:
-            raise ValueError("Input Price between the range of 1 and 30")
-        return price
+    #  @validates('price')
+    #  def validate_price(self, key, price):
+    #     if price is None or not (1 >= price <= 30):
+    #         raise ValueError("Input Price between the range of 1 and 30")
+    #     return price
 
 
