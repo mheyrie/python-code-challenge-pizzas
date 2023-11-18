@@ -55,8 +55,7 @@ class Pizza(db.Model, SerializerMixin):
 class RestaurantPizza(db.Model, SerializerMixin):
      __tablename__ = 'restaurant_pizzas'
 
-    #  serialize_rules = ('-restaurant', '-pizza',)
-
+   
      id = db.Column(db.Integer, primary_key=True)
      price = db.Column(db.Integer)
      created_at = db.Column(db.DateTime, server_default=db.func.now())
@@ -70,11 +69,11 @@ class RestaurantPizza(db.Model, SerializerMixin):
      def __repr__(self):
         return f'<RestaurantPizza {self.id} for {self.price}>'
 
-    #Validation that price must be between 1 and 30
-    #  @validates('price')
-    #  def validate_price(self, key, price):
-    #     if price is None or not (1 >= price <= 30):
-    #         raise ValueError("Input Price between the range of 1 and 30")
-    #     return price
+    #  Validation that price must be between 1 and 30
+     @validates('price')
+     def validate_price(self, key, price):
+        if price is None or not (1 >= price <= 30):
+            raise ValueError("Input Price between the range of 1 and 30")
+        return price
 
 
